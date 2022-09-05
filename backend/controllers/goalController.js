@@ -9,8 +9,19 @@ const User = require('../model/userModel');
 const getGoals = asyncHandler(async(req, res) => {
 
     const goals = await Goal.find({ user: req.user.id });
-
     res.status(200).json(goals)
+})
+
+
+// @desc  Get goals
+// @route GET /api/goals
+// @access Private
+const getGoalStats = asyncHandler(async(req, res) => {
+
+    const pendingGoals = await Goal.find({ user: req.user.id, lastDate: {"$gt":new Date()}});
+    const finishedGoals = await Goal.find({ user: req.user.id, lastDate: {"$lt":new Date()}});
+
+    res.status(200).json({ pendingGoals, finishedGoals })
 })
 
 // @desc  Set goal
@@ -22,9 +33,15 @@ const setGoal = asyncHandler(async(req, res) => {
         throw new Error('Please provide a text')
     }
 
+    if(!req.body.lastDate){
+        res.status(400)
+        throw new Error('Please provide a last date of goal')
+    }
+
     const goal = await Goal.create({
         text: req.body.text,
-        user: req.user.id
+        user: req.user.id,
+        lastDate: new Date(req.body.lastDate)
     });
 
     res.status(200).json(goal)
@@ -98,4 +115,5 @@ module.exports = {
     setGoal,
     updateGoal,
     deleteGoal,
+    getGoalStats
 }

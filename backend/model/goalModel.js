@@ -12,6 +12,11 @@ const goalSchema = mongoose.Schema({
         type: String,
         required: [true, 'Please provide a text']
 
+    },
+
+    lastDate: {
+        type: Object,
+        required: [true, 'Please provide a last date']
     }
 
 }, {
