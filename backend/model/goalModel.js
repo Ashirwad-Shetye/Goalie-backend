@@ -17,6 +17,16 @@ const goalSchema = mongoose.Schema({
     lastDate: {
         type: Object,
         required: [true, 'Please provide a last date']
+    },
+
+    description: {
+        type: String,
+        required: [true, 'Please provide a description']
+    },
+
+    remaindInDays: {
+        type: Number,
+        required: [true, 'Please provide number of days to Remaind a goal']
     }
 
 }, {
