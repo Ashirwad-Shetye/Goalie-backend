@@ -1,14 +1,17 @@
 const asyncHandler = require('express-async-handler');
-
 const Goal = require('../model/goalModel');
 const User = require('../model/userModel');
+const { GOAL_ADDED } = require('./../configs/emailTemplates')
+const { sendEmail } = require('./../services/email');
+
+
 
 // @desc  Get goals
 // @route GET /api/goals
 // @access Private
 const getGoals = asyncHandler(async(req, res) => {
 
-    const goals = await Goal.find({ user: req.user.id });
+    const goals = await Goal.find({ user: req.user.id }).sort('-createdAt');
     res.status(200).json(goals)
 })
 
@@ -18,8 +21,8 @@ const getGoals = asyncHandler(async(req, res) => {
 // @access Private
 const getGoalStats = asyncHandler(async(req, res) => {
 
-    const pendingGoals = await Goal.find({ user: req.user.id, lastDate: {"$gt":new Date()}});
-    const finishedGoals = await Goal.find({ user: req.user.id, lastDate: {"$lt":new Date()}});
+    const pendingGoals = await Goal.find({ user: req.user.id, lastDate: {$gt: Date.parse(new Date())}});
+    const finishedGoals = await Goal.find({ user: req.user.id, lastDate: {$lt: Date.parse(new Date())}});
 
     res.status(200).json({ pendingGoals, finishedGoals })
 })
@@ -33,6 +36,16 @@ const setGoal = asyncHandler(async(req, res) => {
         throw new Error('Please provide a text')
     }
 
+    if(!req.body.description){
+        res.status(400)
+        throw new Error('Please provide a description')
+    }
+
+    if(!req.body.remaindInDays){
+        res.status(400)
+        throw new Error('Please provide a Days to Remainder')
+    }
+
     if(!req.body.lastDate){
         res.status(400)
         throw new Error('Please provide a last date of goal')
@@ -41,8 +54,12 @@ const setGoal = asyncHandler(async(req, res) => {
     const goal = await Goal.create({
         text: req.body.text,
         user: req.user.id,
-        lastDate: new Date(req.body.lastDate)
+        lastDate: Date.parse(req.body.lastDate),
+        description: req.body.description,
+        remaindInDays: req.body.remaindInDays
     });
+
+    sendEmail(GOAL_ADDED(req.user.name, req.body.text, req.body.lastDate), req.user.email)
 
     res.status(200).json(goal)
 })
