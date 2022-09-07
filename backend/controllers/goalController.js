@@ -59,7 +59,7 @@ const setGoal = asyncHandler(async(req, res) => {
         remaindInDays: req.body.remaindInDays
     });
 
-    sendEmail(GOAL_ADDED(req.user.name, req.body.text, req.body.lastDate), req.user.email)
+    sendEmail(req.user,GOAL_ADDED(req.user.name, req.body.text, req.body.lastDate))
 
     res.status(200).json(goal)
 })

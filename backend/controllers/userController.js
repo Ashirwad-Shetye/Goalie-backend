@@ -35,8 +35,7 @@ const registerUser = asyncHandler(async(req, res) => {
         password: hashedPassword
     })
 
-    sendEmail(WELCOME_EMAIL(name),email)
-
+    sendEmail(user,WELCOME_EMAIL(name))
 
     if(user) {
 
