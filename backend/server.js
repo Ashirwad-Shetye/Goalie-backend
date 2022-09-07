@@ -5,6 +5,9 @@ const port = process.env.PORT || 5000;
 const colors = require('colors');
 const { connectDB } = require('./configs/db');
 const cors = require('cors');
+const sendMails = require('./services/cron-mails')
+const cron = require('node-cron');
+const { sendEmail } = require('./services/email');
 
 connectDB();
 
@@ -31,6 +34,8 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/goals', require('./routes/goalRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
+
+sendMails.start();
 
 app.use(errorHandler);
 
