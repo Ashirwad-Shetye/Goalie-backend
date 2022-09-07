@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler')
 const User = require('../model/userModel')
+const { sendEmail } = require('./../services/email');
+const { WELCOME_EMAIL } = require('./../configs/emailTemplates')
 
 // @desc  Register new user
 // @route POST /api/users
@@ -33,6 +35,9 @@ const registerUser = asyncHandler(async(req, res) => {
         password: hashedPassword
     })
 
+    sendEmail(WELCOME_EMAIL(name),email)
+
+
     if(user) {
 
         res.status(201)
@@ -48,6 +53,26 @@ const registerUser = asyncHandler(async(req, res) => {
         throw new Error('Invalid user data received')
     }
 })
+
+// @desc  Delete goal
+// @route DELETE /api/goals/:id
+// @access Private
+const deleteUser = asyncHandler(async(req, res) => {
+    const user = await User.findById(req.params.id);
+    const LoggedInUser = await User.findById(req.user.id);
+    // check for user
+    if(!user){
+        res.status(401)
+        throw new Error('User not found')
+    }
+
+    await user.remove();
+
+    res.status(200).json({ id: req.params.id})
+})
+
+
+
 
 // @desc  Authenticate user
 // @route POST /api/users
@@ -87,6 +112,34 @@ const getMe = asyncHandler(async(req, res) => {
     })
 })
 
+// @desc  Get user data
+// @route POST /api/users/me
+// @access Private
+const getUserById = asyncHandler(async(req, res) => {
+    const user = await User.findById(req.params.id);
+    if(!user){
+        res.status(401)
+        throw new Error('User not found')
+    }
+    const {_id, name, email} = user;
+
+    res.status(200).json({
+        id: _id,
+        name,
+        email,
+    })
+})
+
+// @desc  Get user data
+// @route POST /api/users/me
+// @access Private
+const getAllUsers = asyncHandler(async(req, res) => {
+    const users = await User.find();
+    console.log(users)
+    res.status(200).json(users)
+})
+
+
 // generate JWT
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -97,5 +150,8 @@ const generateToken = (id) => {
 module.exports = { 
     registerUser,
     LoginUser,
-    getMe
+    getMe,
+    deleteUser,
+    getAllUsers,
+    getUserById
 }
