@@ -1,3 +1,5 @@
+const EmailSendLogs = require('../model/emailSendLogs')
+
 const nodemailer = require('nodemailer');
       let transporter = nodemailer.createTransport({
             service: 'Gmail',
@@ -8,10 +10,10 @@ const nodemailer = require('nodemailer');
      })
 
 
-const sendEmail = async (message,receiverMail) =>{
+const sendEmail = async (user, message,goal, email="") =>{
     let messageData = {
             from: process.env.EMAIL_ID,
-            to: receiverMail,
+            to: user.email,
             subject: message.subject,
             text: message.body
     }
@@ -20,6 +22,11 @@ const sendEmail = async (message,receiverMail) =>{
             console.log(err)
         }
         else{
+            EmailSendLogs.create({
+                user,
+                template: message.type,
+                goal
+            })
             console.log(info)
         }
     })
