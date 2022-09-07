@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Goal management and community app",
   "main": "server.js",
+  "engines": {
+    "node": "15.x"
+  },
   "scripts": {
     "start": "node backend/server.js",
     "server": "nodemon backend/server.js",
