@@ -57,18 +57,56 @@ const deletePost = asyncHandler(async(req, res) => {
 })
 
 //@desc Like/Dislike post
-//@route DELETE /api/posts/:id
+//@route put /api/posts/:id
 //@access Private
+const likePost = asyncHandler(async(req, res) => {
+    const post = await Post.findById(req.params.id);
+
+    if(!post){
+        res.status(400)
+        throw new Error('Post not found');
+    }
+
+    if(!post.likes.includes(req.body.user)){
+        await post.updateOne({
+            $push: { likes: req.body.user }
+        })
+        res.status(200).json('Post has been liked')
+    } else {
+        await post.updateOne({
+            $push: { likes: req.body.user}
+        })
+        res.status(200).json('Post has been disliked')
+    }
+})
 
 //@desc get a post
 //@route DELETE /api/posts/:id
 //@access Private
+const getPost = asyncHandler(async (req, res) => {
+    const post = await Post.findById(req.params.id);
+    res.status(200).json(post)
+})
 
 //@desc get all post
-//@route DELETE /api/posts/:id
+//@route GET /api/posts
 //@access Private
+const allPosts = asyncHandler(async(req, res) => {
+    Post.find({}, function (err, post) {
+        const postMap = {};
+
+        post.forEach(function (post) {
+            postMap[post.id] = post;
+        })
+
+        res.status(200).json(postMap)
+    })
+})
 
 module.exports = {
     newPost,
-    deletePost
+    deletePost,
+    likePost,
+    getPost,
+    allPosts,
 }

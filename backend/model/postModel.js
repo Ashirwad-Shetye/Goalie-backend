@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const commentSchema = require('./commentModel')
+
 const postSchema = mongoose.Schema({
 
     user:{
@@ -17,7 +19,8 @@ const postSchema = mongoose.Schema({
     likes:{
         type:Array,
         default:[]
-    }
+    },
+    comments: { commentSchema }
 },{
     timestamps: true,
 })

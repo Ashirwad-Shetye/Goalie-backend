@@ -75,7 +75,7 @@ const LoginUser = asyncHandler(async(req, res) => {
 })
 
 // @desc  Get user data
-// @route POST /api/users/me
+// @route GET /api/users/me
 // @access Private
 const getMe = asyncHandler(async(req, res) => {
     const {_id, name, email} = await User.findById(req.user.id);
@@ -84,6 +84,21 @@ const getMe = asyncHandler(async(req, res) => {
         id: _id,
         name,
         email,
+    })
+})
+
+// @desc  Get user data
+// @route GET /api/users/me
+// @access Private
+const allUsers = asyncHandler(async(req, res) => {
+    User.find({}, function (err, user) {
+        const userMap = {};
+
+        user.forEach(function (user) {
+            userMap[user.id] = user;
+        })
+
+        res.status(200).json(userMap)
     })
 })
 
@@ -97,5 +112,7 @@ const generateToken = (id) => {
 module.exports = { 
     registerUser,
     LoginUser,
-    getMe
+    getMe,
+    allUsers
+
 }
