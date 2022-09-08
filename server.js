@@ -1,13 +1,13 @@
 const express = require('express');
 const dotenv = require('dotenv').config();
-const { errorHandler } = require('./middleware/errorMiddleware');
+const { errorHandler } = require('./backend/middleware/errorMiddleware');
 const port = process.env.PORT || 5000;
 const colors = require('colors');
-const { connectDB } = require('./configs/db');
+const { connectDB } = require('./backend/configs/db');
 const cors = require('cors');
-const sendMails = require('./services/cron-mails')
+const sendMails = require('./backend/services/cron-mails')
 const cron = require('node-cron');
-const { sendEmail } = require('./services/email');
+const { sendEmail } = require('./backend/services/email');
 
 connectDB();
 
@@ -32,8 +32,8 @@ app.use(cors(corsOpts));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use('/api/goals', require('./routes/goalRoutes'));
-app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/goals', require('./backend/routes/goalRoutes'));
+app.use('/api/users', require('./backend/routes/userRoutes'));
 
 sendMails.start();
 

@@ -7,8 +7,8 @@
     "node": "15.x"
   },
   "scripts": {
-    "start": "node backend/server.js",
-    "server": "nodemon backend/server.js",
+    "start": "node server.js",
+    "server": "nodemon server.js",
     "test": "mocha",
      "mail-job": "node backend/services/corn-mails.js"
   },
@@ -34,3 +34,5 @@
     "supertest": "^6.2.4"
   }
 }
+
+
