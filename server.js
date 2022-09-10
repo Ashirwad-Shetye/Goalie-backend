@@ -23,11 +23,11 @@ const corsOpts = {
     // ],
     origin: [ 'http://localhost:3000' ]
 
-  };
+};
   
  
 const app = express();
-app.use(cors(corsOpts));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
