@@ -35,7 +35,7 @@ const registerUser = asyncHandler(async(req, res) => {
         password: hashedPassword
     })
 
-    sendEmail(user,WELCOME_EMAIL(name))
+    sendEmail(WELCOME_EMAIL(name), email)
 
     if(user) {
 
@@ -155,7 +155,7 @@ const allUsers = asyncHandler(async(req, res) => {
 
 // generate JWT
 const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, {
+    return jwt.sign({ id }, process.env.JWT_SECRET_KEY, {
         expiresIn: '30d',
     })
 }
