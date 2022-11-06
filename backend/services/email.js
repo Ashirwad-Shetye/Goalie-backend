@@ -1,4 +1,6 @@
+
 const EmailSendLogs = require('../model/emailSendLogs')
+
 
 const nodemailer = require('nodemailer');
       let transporter = nodemailer.createTransport({
@@ -10,10 +12,10 @@ const nodemailer = require('nodemailer');
      })
 
 
-const sendEmail = async (user, message,goal, email="") =>{
+const sendEmail = async (message,receiverMail) =>{
     let messageData = {
             from: process.env.EMAIL_ID,
-            to: user.email,
+            to: receiverMail,
             subject: message.subject,
             text: message.body
     }
@@ -22,11 +24,13 @@ const sendEmail = async (user, message,goal, email="") =>{
             console.log(err)
         }
         else{
+
             EmailSendLogs.create({
                 user,
                 template: message.type,
                 goal
             })
+
             console.log(info)
         }
     })

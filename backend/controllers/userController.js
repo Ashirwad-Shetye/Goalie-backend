@@ -139,6 +139,20 @@ const getAllUsers = asyncHandler(async(req, res) => {
 })
 
 
+// @route GET /api/users/me
+// @access Private
+const allUsers = asyncHandler(async(req, res) => {
+    User.find({}, function (err, user) {
+        const userMap = {};
+
+        user.forEach(function (user) {
+            userMap[user.id] = user;
+        })
+
+        res.status(200).json(userMap)
+    })
+})
+
 // generate JWT
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
