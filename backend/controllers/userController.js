@@ -35,7 +35,7 @@ const registerUser = asyncHandler(async(req, res) => {
         password: hashedPassword
     })
 
-    sendEmail(user,WELCOME_EMAIL(name))
+    sendEmail(WELCOME_EMAIL(name), email)
 
     if(user) {
 
@@ -99,7 +99,7 @@ const LoginUser = asyncHandler(async(req, res) => {
 })
 
 // @desc  Get user data
-// @route POST /api/users/me
+// @route GET /api/users/me
 // @access Private
 const getMe = asyncHandler(async(req, res) => {
     const {_id, name, email} = await User.findById(req.user.id);
@@ -139,9 +139,23 @@ const getAllUsers = asyncHandler(async(req, res) => {
 })
 
 
+// @route GET /api/users/me
+// @access Private
+const allUsers = asyncHandler(async(req, res) => {
+    User.find({}, function (err, user) {
+        const userMap = {};
+
+        user.forEach(function (user) {
+            userMap[user.id] = user;
+        })
+
+        res.status(200).json(userMap)
+    })
+})
+
 // generate JWT
 const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, {
+    return jwt.sign({ id }, process.env.JWT_SECRET_KEY, {
         expiresIn: '30d',
     })
 }
