@@ -7,6 +7,8 @@ const cors = require('cors');
 const sendMails = require('./backend/services/cron-mails')
 const cron = require('node-cron');
 const { sendEmail } = require('./backend/services/email');
+const dotenv = require('dotenv').config();
+
 
 connectDB();
 
