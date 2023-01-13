@@ -9,10 +9,21 @@ const cors = require('cors');
 connectDB();
 
 const app = express();
-app.use(cors({
-    origin: "*",
-}));
+const corsOpts = {
+    origin: '*',
+  
+    methods: [
+      'GET',
+      'POST',
+    ],
+  
+    // allowedHeaders: [
+    //   'Content-Type',
+    // ],
+    origin: [ 'http://localhost:3000', 'https://goalietask.netlify.app']
 
+};
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
