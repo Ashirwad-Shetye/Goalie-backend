@@ -11,25 +11,22 @@ const dotenv = require('dotenv').config();
 
 
 connectDB();
-
 const corsOpts = {
-    origin: '*',
-  
-    methods: [
-      'GET',
-      'POST',
-    ],
-  
-    // allowedHeaders: [
-    //   'Content-Type',
-    // ],
-    origin: [ 'http://localhost:3000', 'https://goalietask.netlify.app']
+  origin: '*',
 
+  methods: [
+    'GET',
+    'POST',
+  ],
+
+  allowedHeaders: [
+    'Content-Type',
+  ],
 };
-  
+
+app.use(cors(corsOpts));
  
 const app = express();
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

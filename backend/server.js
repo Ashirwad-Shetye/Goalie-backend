@@ -17,13 +17,13 @@ const corsOpts = {
       'POST',
     ],
   
-    // allowedHeaders: [
-    //   'Content-Type',
-    // ],
-    origin: [ 'http://localhost:3000', 'https://goalietask.netlify.app']
-
-};
-app.use(cors());
+    allowedHeaders: [
+      'Content-Type',
+    ],
+  };
+  
+  app.use(cors(corsOpts));
+  
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
