@@ -23,7 +23,7 @@ const corsOpts = {
     // allowedHeaders: [
     //   'Content-Type',
     // ],
-    origin: [ 'http://localhost:3000', 'https://goalietask.netlify.app']
+    origin: [ 'http://localhost:3000', 'https://goalietask.netlify.app', 'https://goalie.ashirwadshetye.com']
 
 };
   
