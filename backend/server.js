@@ -14,7 +14,11 @@ const corsOpts = {
 
   methods: ["GET", "POST"],
 
-  origin: ["http://localhost:3000", "https://goalietask.netlify.app"],
+  origin: [
+    "http://localhost:3000",
+    "https://goalietask.netlify.app",
+    "https://goalie.ashirwadshetye.com/",
+  ],
 };
 app.use(cors(corsOpts));
 app.use(express.json({ limit: "5mb", extended: true }));
