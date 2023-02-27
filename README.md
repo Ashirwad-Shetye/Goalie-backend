@@ -20,7 +20,7 @@ Main motive behind Goalie is to create a social accountability to help user comp
 
 # Demo
 
-[Live demo](https://goalietask.netlify.app/)
+[Live demo](https://goalie.ashirwadshetye.com/)
 
 <br/>
 
