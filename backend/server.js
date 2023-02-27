@@ -17,7 +17,7 @@ const corsOpts = {
   origin: [
     "http://localhost:3000",
     "https://goalietask.netlify.app",
-    "https://goalie.ashirwadshetye.com/",
+    "https://goalie.ashirwadshetye.com",
   ],
 };
 app.use(cors(corsOpts));

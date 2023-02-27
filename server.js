@@ -16,9 +16,6 @@ const corsOpts = {
 
   methods: ["GET", "POST"],
 
-  // allowedHeaders: [
-  //   'Content-Type',
-  // ],
   origin: [
     "http://localhost:3000",
     "https://goalietask.netlify.app",
